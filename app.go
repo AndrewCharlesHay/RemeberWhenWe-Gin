@@ -7,6 +7,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go/service/rds"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,11 +16,18 @@ func setupRouter() *gin.Engine {
     // Using the SDK's default configuration, loading additional config
     // and credentials values from the environment variables, shared
     // credentials, and shared configuration files
-    cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-2"))
+    cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-2"))
     if err != nil {
         log.Fatalf("unable to load SDK config, %v", err)
     }
 	
+	// Create a new AWS session with the specified region
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("us-east-2"),
+	})
+
+	getRdsClient(sess)
+
 	log.Print(cfg)
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -32,7 +41,7 @@ func main() {
 	r.Run(":8080")
 }
 
-func getRdsClient() {
+func getRdsClient(sess *session.Session) {
 	// Create an RDS service client
 	rdsClient := rds.New(sess)
 
