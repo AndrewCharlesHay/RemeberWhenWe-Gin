@@ -34,5 +34,5 @@ func TestAWSSetup(t *testing.T) {
 	}
 
 	t.Logf("AWS setup is successful")
-	t.Logf(*sess.Config.Endpoint)
+	t.Logf(*sess.Config.Region)
 }
