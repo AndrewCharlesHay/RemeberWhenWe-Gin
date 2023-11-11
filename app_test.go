@@ -9,9 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/stretchr/testify/assert"
-	// "github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
+	"github.com/stretchr/testify/mock"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 )
 
+
+// MockCredentialsProvider is a mock implementation of the credentials.Provider interface
+type MockCredentialsProvider struct {
+	mock.Mock
+	credentials.Provider
+}
 func TestPingRoute(t *testing.T) {
 
 
